@@ -1,4 +1,5 @@
 ### Hi there 👋
+Manchester University Bioimaging Core Facility is doing remarkable work in the field of imaging and data analysis and where possible it makes software and libraries available to the wider scientific community. Bioimaging Core Facility also contribute enhancements and bug fixes to several open-source projects. This repository also aims at providing imaging support to researchers by bringing in various state-of-the-art imaging and data analysis software, developed by the facility or gathered from external open-source resources, on one place.
 
 <!--
 **manbioimaging/ManBioImaging** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
