@@ -1,3 +1,7 @@
+// This macro counts the cells in z-stack. It uses imageJ plugin 3D Object Counter to do the task.
+// Open a Z-stack Image to start with
+
+
 run("8-bit");
 run("Duplicate...", "duplicate");
 title = getTitle();
