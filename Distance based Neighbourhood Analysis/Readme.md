@@ -65,7 +65,7 @@ You will see this dialog:
 ### B. Select More ROIs?
 
 After pressing OK, this dialog appears:
-![Select More ROIs Dialog](Distance%20based%20Neighbourhood%20Analysis/Images/select-more-rois-dialog.PNG)
+![Select More ROIs Dialog](/Images/select-more-rois-dialog.PNG)
 
 > Do you want to select other cells in the same image?
 
