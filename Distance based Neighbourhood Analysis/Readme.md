@@ -27,7 +27,7 @@ You can run this macro in Fiji using any of these methods:
 
 You will see this dialog box:
 
-![Main Setup Dialog](img/main-setup-dialog.png)
+![Main Setup Dialog](Distance based Neighbourhood Analysis/Images/main-setup-dialog.png)
 
 | Field               | Description                                      |
 |---------------------|--------------------------------------------------|
@@ -53,7 +53,7 @@ For each image, the macro automatically:
 
 You will see this dialog:
 
-![Select ROI Dialog](img/action-required-dialog.png)
+![Select ROI Dialog](Distance based Neighbourhood Analysis/Images/action-required-dialog.png)
 
 > Click within any cell area to select the cell boundary, then click OK to proceed. (Use image with title Original Image-Dup)
 
@@ -66,7 +66,7 @@ You will see this dialog:
 
 After pressing OK, this dialog appears:
 
-![Select More ROIs Dialog](img/select-more-rois-dialog.png)
+![Select More ROIs Dialog](Distance based Neighbourhood Analysis/Images/select-more-rois-dialog.png)
 
 > Do you want to select other cells in the same image?
 
