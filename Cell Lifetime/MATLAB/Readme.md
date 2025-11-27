@@ -76,6 +76,9 @@ Modify `parameters.m` to tune thresholds, number of angle partitions, smoothing,
 ## Citation
 Stringer C, Wang T, Michaelos M, Pachitariu M. *Cellpose: a generalist algorithm for cellular segmentation.* Nature Methods 18, 100–106 (2021).
 
-## Contact
+## Author
 Muhammad Aurangzeb Khan  
-Manchester Cell-Matrix Centre
+Manchester Cell–Matrix Centre (DRP)
+Bioimaging Facility, University of Manchester
+muhammadaurangzeb.khan@manchester.ac.uk
+aurangzebniazi@gmail.com
