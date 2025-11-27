@@ -128,7 +128,11 @@ Stringer C et al., Nature Methods 2021
 Tinevez JY et al., Methods 2017
 
 # Author
-**Muhammad Aurangzeb Khan**
+**Muhammad Aurangzeb Khan**  
+Manchester Cell–Matrix Centre (DRP)  
+Bioimaging Facility, University of Manchester 
+muhammadaurangzeb.khan@manchester.ac.uk, 
+aurangzebniazi@gmail.com
 
 # License
 MIT License
