@@ -1,6 +1,5 @@
-# fibrilsAnalysis\_.ijm - ImageJ Macro for Fibrillar Structure Segmentation in EM Images
-
-This repository contains an ImageJ macro designed for the segmentation and analysis of fibrillar structures in Electron Microscopy (EM) images. The macro integrates the Cellpose deep learning tool to perform segmentation and provides both automated and semi-automated ROI filtering features.
+# EM-FibrilX: Advanced EM Fibril Segmentation and Quantification 
+This repository contains an ImageJ macro (fibrilsAnalysis\_.ijm ) designed for the segmentation and analysis of fibrillar structures in Electron Microscopy (EM) images. The macro integrates the Cellpose deep learning tool to perform segmentation and provides both automated and semi-automated ROI filtering features.
 
 ---
 
