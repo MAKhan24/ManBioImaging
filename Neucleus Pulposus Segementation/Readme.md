@@ -44,4 +44,7 @@ python infer_unet_folder.py \
 ```
 
 ## Contact
-Muhammad Aurangzeb Khan
+Manchester Cell–Matrix Centre (DRP)
+Bioimaging Facility, University of Manchester
+muhammadaurangzeb.khan@manchester.ac.uk
+aurangzebniazi@gmail.com
