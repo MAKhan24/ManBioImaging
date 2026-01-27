@@ -159,7 +159,40 @@ Columns:
 - `output_path` – full output path
 
 ---
+## Requirements
 
+- **Fiji (ImageJ distribution)** – strongly recommended  
+  Download: https://fiji.sc
+
+- The following Fiji plugins / commands are required and must be available:
+
+### Core Fiji (usually installed by default)
+- ROI Manager
+- Results Table
+- `Maximum...` (Process ▸ Filters)
+- `Keep Largest Region` (Process ▸ Binary)
+- `Create Selection` (Edit ▸ Selection)
+- `Rotate...` (Image ▸ Transform)
+
+### Required Plugin: Oriented Bounding Box
+This macro relies on the **Oriented Bounding Box (OBB)** command to extract:
+- object centre (`Box.Center.X`, `Box.Center.Y`)
+- object orientation (`Box.Orientation`)
+
+You must have a Fiji build that includes **Oriented Bounding Box**.
+
+To check:
+1. Open Fiji
+2. Search via **Plugins ▸ Search…**
+3. Type **Oriented Bounding Box**
+
+If the command is missing:
+- Update Fiji via **Help ▸ Update…**
+- Restart Fiji after updating
+
+> If the Oriented Bounding Box plugin is not available or fails, the macro will automatically fall back to **manual orientation mode**.
+
+---
 ## Tips / Best Practices
 
 - Choose `boxWidth` and `boxHeight` large enough so the object remains inside the crop even after rotation.
