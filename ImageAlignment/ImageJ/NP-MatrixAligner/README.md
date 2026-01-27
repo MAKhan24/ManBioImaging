@@ -237,4 +237,10 @@ If the command is missing:
 If you use this in a publication, cite:
 - Fiji / ImageJ (Schindelin et al., 2012; Rueden et al., 2017)
 
-(You can add any segmentation method citations here too if relevant.)
+---
+## Author
+**Muhammad Aurangzeb Khan**  
+Manchester Cell–Matrix Centre (DRP)  
+Bioimaging Facility, University of Manchester 
+muhammadaurangzeb.khan@manchester.ac.uk, 
+aurangzebniazi@gmail.com
