@@ -22,11 +22,10 @@ Neuceus Pulposus Segmentation/
 
 ```
 
-## Installation
+## Create the Environment
 ```
-git clone https://github.com/YourUsername/NP-MatrixSeg.git
-cd NP-MatrixSeg
-pip install torch torchvision tifffile scikit-image numpy
+conda env create -f segmenationUNETvsRL.yml
+conda activate segmenationUNETvsRL
 ```
 
 ## Training
