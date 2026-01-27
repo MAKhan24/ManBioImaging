@@ -12,11 +12,12 @@ NP-MatrixSeg is a lightweight, fully open-source deep-learning pipeline for segm
 - IoU and Dice evaluation
 - GPU or CPU compatible
 ## Repository Structure
-Neuceus Pulposus Segmentation/
+NP-MatrixSeg/
 ├── train_unet_multidata.py          # Multi-dataset U-Net training
 ├── infer_unet_folder.py             # Batch inference on a folder of images
 ├── segmentation_unet_vs_rl.yml      # Conda environment
 └── README.md
+
 
 ## Installation
 ```
