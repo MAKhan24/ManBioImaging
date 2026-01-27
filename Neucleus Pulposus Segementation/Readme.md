@@ -1,4 +1,4 @@
-# NP-MatrixSeg
+# Neuceus Pulposus Segmentation (NP-MatrixSeg)
 Automated deep-learning segmentation of the nucleus pulposus for cell–matrix analysis in mouse intervertebral discs.
 
 ## Overview
