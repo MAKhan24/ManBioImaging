@@ -20,49 +20,64 @@ function processFolder() {
     if (!File.exists(summaryPath)) {
         File.saveString("file,method,angle_deg,centreX,centreY,output_path\n", summaryPath);
     }
+	list = getFileList(origImgsDirPath);
 
-    list = getFileList(origImgsDirPath);
+    // normalise extension filter
+    extLC = toLowerCase(ext);
+    allowTiffFamily = (extLC == ".tif" || extLC == ".tiff");
 
-    // Build candidate list
-    files = newArray();
-    keys  = newArray(); // numeric keys if possible; NaN-like set to -1 and use alpha sort fallback
+    files = newArray(); // will grow
     cnt = 0;
 
     for (i = 0; i < list.length; i++) {
-        if (endsWith(list[i], ext)) {
-            files[cnt] = list[i];
-            keys[cnt]  = extractTrailingNumberOrMinusOne(list[i]); // robust-ish
+
+        name = list[i];
+
+        // skip directories (they usually end with File.separator in IJM listing)
+        if (endsWith(name, File.separator)) {
+            // print("Skipping folder: " + name);
+            continue;
+        }
+
+        nameLC = toLowerCase(name);
+
+        ok = 0;
+        if (allowTiffFamily) {
+            if (endsWith(nameLC, ".tif") || endsWith(nameLC, ".tiff")) ok = 1;
+        } else {
+            if (endsWith(nameLC, extLC)) ok = 1;
+        }
+
+        if (ok) {
+            files[cnt] = name;
             cnt++;
+        } else {
+            // optional: log skipped entries
+            // print("Skipping (ext mismatch): " + name);
         }
     }
 
     if (cnt == 0) {
-        showMessage("No files found", "No files ending with '" + ext + "' were found in:\n" + origImgsDirPath);
+        showMessage("No files found",
+            "No matching files found in:\n" + origImgsDirPath +
+            "\n\nFilter: " + ext + " (case-insensitive)");
         return;
     }
 
-    // Sort:
-    // If most keys are valid (>=0), sort by numeric key; otherwise sort alphabetically.
-    validKeyCount = 0;
-    for (i=0; i<keys.length; i++) if (keys[i] >= 0) validKeyCount++;
+    Array.sort(files); // alphabetical, reliable
 
-    if (validKeyCount >= round(keys.length * 0.6)) {
-        Array.sort(keys, files);
-        print("Sorting mode: numeric (trailing number in filename)");
-    } else {
-        Array.sort(files);
-        print("Sorting mode: alphabetical");
-    }
+    print("Found " + cnt + " matching files.");
 
-    close("*");
-
+    // Process each file
     for (i = 0; i < files.length; i++) {
         if (files[i] == "") continue;
-        processFile(files[i], summaryPath);
-        close("*");
+
+        print("Processing: " + files[i]);
+        processFile(files[i], summaryPath); // your existing function
+        close("*"); // clean slate per file (ok here)
     }
 
-    print("Done. Summary CSV: " + summaryPath);
+    print("Done.");
 }
 
 function processFile(fileName, summaryPath) {
@@ -102,53 +117,65 @@ function processFile(fileName, summaryPath) {
             roiManager("Add");
             roiManager("Select", 0);
 
-            Table.reset();
-            // IMPORTANT: no label= here
-            run("Oriented Bounding Box", "show");
+            clearResultsSafely();
 
-			if (Table.size == 0) {
-			    // Fallback to manual if OBB did not write results
+			oldT = findOBoxTableTitle(segTitle);
+			if (oldT != "") safeCloseWindow(oldT);
+			
+			// Run OBB
+			run("Oriented Bounding Box", "show");
+			
+			// Find the created table title dynamically
+			tTitle = findOBoxTableTitle(segTitle);
+			
+			if (tTitle == "") {
+			    // Fallback if table not found
 			    method = "manual_fallback";
 			    tmp = newArray(2);
-			    angleDeg = manualAngleAndCentreByID(origID, tmp);
+			    angleDeg = manualAngleAndCentreByID(origID,origTitle, tmp);
 			    centreX = tmp[0];
 			    centreY = tmp[1];
 			} else {
-			    centreX = Table.get("Box.Center.X", 0);
-			    centreY = Table.get("Box.Center.Y", 0);
-			    angleDeg = 180 - Table.get("Box.Orientation", 0);
+			    // Read centre + orientation from the active OBox table
+				obb = newArray(3);
+				readOBoxFromTable(tTitle, obb);
+				
+				centreX = obb[0];
+				centreY = obb[1];
+				angleDeg = 180 - obb[2];
+			
+			    // Close the table to keep workspace clean (optional)
+			    safeCloseWindow(tTitle);
 			}
 
-
-            roiManager("Reset");
-
-        } else {
+		roiManager("Reset");
+		} else {
+            // Manual mode even though segmentation exists
             method = "manual";
 
-            // Close seg safely by selecting its ID first
-           safeCloseWindow(segTitle);
-
+            // Close seg so it doesn't steal focus
+            safeCloseWindow(segTitle);
 
             tmp = newArray(2);
-            angleDeg = manualAngleAndCentreByID(origID, tmp);
+            angleDeg = manualAngleAndCentreByID(origID, origTitle,tmp);
             centreX = tmp[0];
             centreY = tmp[1];
         }
-
+		
         // If seg still open, close it by ID (try-select then close)
         safeCloseWindow(segTitle);
 
     } else {
         method = "manual_no_seg";
         tmp = newArray(2);
-        angleDeg = manualAngleAndCentreByID(origID, tmp);
+        angleDeg = manualAngleAndCentreByID(origID,origTitle, tmp);
         centreX = tmp[0];
         centreY = tmp[1];
     }
 
     // ---- From here onward, always select by origID
     selectImage(origID);
-
+	selectImage(origTitle);
     angleToApply = normalizeAngleForRotation(angleDeg);
     run("Rotate... ", "angle=" + angleToApply + " grid=1 interpolation=Bilinear");
 
@@ -172,9 +199,9 @@ function processFile(fileName, summaryPath) {
     line = fileName + "," + method + "," + d2s(angleToApply,3) + "," + d2s(centreX,3) + "," + d2s(centreY,3) + "," + outPath + "\n";
     File.append(line, summaryPath);
 
-    safeClose("Results");
-    safeClose("Log");
-    Table.reset();
+    safeCloseWindow("Results");
+    safeCloseWindow("Log");
+    roiManager("reset");
 }
 
 
@@ -207,9 +234,10 @@ function extractTrailingNumberOrMinusOne(name) {
 
 // Manual mode: user draws a line starting at centre and parallel to orientation.
 // Stores centre in globals MANUAL_cx/MANUAL_cy and returns angle.
-function manualAngleAndCentreByID(imgID, outArr) {
+function manualAngleAndCentreByID(imgID,imgTitle, outArr) {
 
     selectImage(imgID);
+    selectImage(imgTitle);
     roiManager("Reset");
 
     waitForUser(
@@ -326,3 +354,51 @@ function safeCloseWindow(title) {
 function safeClose(title) {
     safeCloseWindow(title);
 }
+
+function clearResultsSafely() {
+    // Clears the standard Results table without relying on Table.reset()
+    if (isWindowOpen("Results")) {
+        selectWindow("Results");
+        run("Clear Results");
+    } else {
+        // If Results isn't open, still fine to call; it will create/activate in most builds
+        run("Clear Results");
+    }
+}
+
+function findOBoxTableTitle(segTitle) {
+    // The plugin creates a table titled like:
+    // "<segTitle>-largest-Obox"
+    // We'll search for the newest/most relevant one.
+
+    titles = getList("window.titles");
+
+    // 1) Best match: starts with segTitle and contains "Obox"
+    for (i = titles.length-1; i >= 0; i--) {
+        if (startsWith(titles[i], segTitle) && indexOf(titles[i], "Obox") >= 0)
+            return titles[i];
+        if (startsWith(titles[i], segTitle) && indexOf(titles[i], "OBox") >= 0)
+            return titles[i];
+    }
+
+    // 2) Fallback: any table containing "Obox"
+    for (i = titles.length-1; i >= 0; i--) {
+        if (indexOf(titles[i], "Obox") >= 0 || indexOf(titles[i], "OBox") >= 0)
+            return titles[i];
+    }
+
+    return "";
+}
+
+function readOBoxFromTable(tableTitle, outArr) {
+    // outArr[0] = centreX
+    // outArr[1] = centreY
+    // outArr[2] = orientation
+
+    selectWindow(tableTitle);
+
+    outArr[0] = Table.get("Box.Center.X", 0);
+    outArr[1] = Table.get("Box.Center.Y", 0);
+    outArr[2] = Table.get("Box.Orientation", 0);
+}
+
