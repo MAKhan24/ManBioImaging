@@ -1,4 +1,7 @@
-#@ File    (label = "Source directory", style = "directory") input
+//Author: Muhammad Aurangzeb Khan
+//This macro can convert images present in some folder to a stack
+
+#@ File    (label = "Source directory", style = "directory") //input path to the directory conataining input images.
 #@ String  (label = "File extension", value=".tif") ext
 
 processFolder(input);
@@ -35,7 +38,7 @@ function processFolder(input) {
 		}
 	}
 	
-	run("Images to Stack", "  title=[WT] use");
+	run("Images to Stack", "  title=[WT] use"); //in title, replace 'WT' with some substring from names of the images 
 }
 
 function processFile(input, file,imcnt) {
