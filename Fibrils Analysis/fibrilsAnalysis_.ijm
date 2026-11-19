@@ -155,7 +155,7 @@ function getROIValues(ImgTitle,metric) {
         run("Set Measurements...", "mean redirect=None decimal=3");
         label = "Mean";
         divider = maxGreylevel;
-    } else if (metric == "Median") {
+    } else if (metric == "Circularity") {
        run("Set Measurements...", "shape redirect=None decimal=3");
        label = "Circ.";
     } else if (metric == "Median") {
