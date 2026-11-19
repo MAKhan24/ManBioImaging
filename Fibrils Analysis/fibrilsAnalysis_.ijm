@@ -201,7 +201,7 @@ function previewROIs(values, minT, maxT, lastMetric) {
             	j++;
 
         	}
-    	}else if(lastMetric=="Circ."){
+    	}else if(lastMetric=="Circularity"){
     		if (values[i] <= minT) {
             	tempArray[j]=i;
 
@@ -241,7 +241,7 @@ function deleteOutliers(values, minT, maxT,lastMetric) {
 
             	deleted++;
         	}
-    	}else if(lastMetric=="Circ."){
+    	}else if(lastMetric=="Circulrity"){
     		if (values[i] <= minT) {
             	tempArray[deleted]=i;
 
